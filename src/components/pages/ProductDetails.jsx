@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Typography } from "@material-ui/core";
+import Container from "../core/container/Container";
 
 class ProductDetails extends Component {
   constructor(props) {
@@ -8,10 +9,12 @@ class ProductDetails extends Component {
   }
   render() {
     return (
-      <Typography align="center">
-        Product Id: {this.props.match.params.id} This is product details page.
-        WIP
-      </Typography>
+      <Container>
+        <Typography align="center">
+          Product Id: {this.props.match.params.id} This is product details page.
+          WIP
+        </Typography>
+      </Container>
     );
   }
 }

@@ -16,6 +16,7 @@ import { AuthContext } from "./contexts/AuthContext";
 import Checkout from "./components/pages/Checkout";
 import SignIn from "./components/pages/SignIn";
 import ProductDetails from "./components/pages/ProductDetails";
+import LatestProducts from "./containers/LatestProducts";
 // All the following keys are optional.
 // We try our best to provide a great default value.
 const theme = createMuiTheme({
@@ -48,9 +49,13 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <Router>
             <Switch>
-              <Route exact path={"/"} component={Home} />
+              <Home>
+                <Switch>
+                  <Route exact path={"/"} component={LatestProducts} />
+                  <Route path={"/product/:id"} component={ProductDetails} />
+                </Switch>
+              </Home>
               <Route path={"/signin"} component={SignIn} />
-              <Route path={"/product/:id"} component={ProductDetails} />
               <PrivateRoute path={"/checkout"} component={Checkout} />
             </Switch>
           </Router>
