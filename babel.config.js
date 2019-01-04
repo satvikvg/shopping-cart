@@ -3,11 +3,7 @@ module.exports = api => {
     modules: false
   };
 
-  let presets = [
-    ["@babel/preset-env", envOpts],
-    "@babel/preset-react",
-    "@babel/polyfill"
-  ];
+  let presets = [["@babel/preset-env", envOpts], "@babel/preset-react"];
 
   let plugins = [
     [

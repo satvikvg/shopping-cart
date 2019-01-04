@@ -25,11 +25,12 @@ function* productWorkerSaga() {
 function* fetchLatestProducts() {
   try {
     console.log("Fetching latest products.");
-    const response = yield fetch("http://localhost:8080/products/latest/");
+    const response = yield fetch("http://localhost:3004/products?_limit=20");
     const responseJson = yield response.json();
-    console.log("A ", responseJson);
+    console.log(responseJson);
     return responseJson;
   } catch (error) {
+    console.error(error);
     yield put({ type: FETCH_LATEST_PRODUCTS_FALIURE, payload: { error } });
     return null;
   }

@@ -30,3 +30,12 @@ export default function reduce(state = initialState, action = {}) {
         return state;
     }
 }
+
+// Selectors -------------
+export function getLatestProducts(state) {
+    return state.product.latestProducts;
+}
+
+export function isLoading(state) {
+    return state.product.loading;
+}

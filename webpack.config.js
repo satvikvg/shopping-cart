@@ -8,7 +8,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
-  entry: resolve(__dirname, "src") + "/index.js",
+  entry: ["@babel/polyfill", resolve(__dirname, "src") + "/index.js"],
   module: {
     rules: [
       {
@@ -39,7 +39,7 @@ module.exports = {
     ]
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: true
   },
   resolve: {
     extensions: [".js", ".jsx"]
