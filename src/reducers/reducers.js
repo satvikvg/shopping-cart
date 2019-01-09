@@ -1,4 +1,4 @@
 import product from "./product/reducer";
 import { combineReducers } from "redux";
 
-export const reducers = combineReducers({ product: product });
+export const reducers = combineReducers({ product });

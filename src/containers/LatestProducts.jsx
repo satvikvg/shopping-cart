@@ -40,10 +40,9 @@ class LatestProducts extends Component {
 
   renderLatestProducts() {
     const { latestProducts } = this.props;
-    console.debug("Render LP: " + latestProducts);
     return (
       <React.Fragment>
-        <Typography variant="subtitle1">Latest Products</Typography>
+        <Typography variant="h5">Latest Products</Typography>
         {latestProducts.map(product => {
           console.log(product);
           return <ProductCard key={product.id} product={product} />;
@@ -55,8 +54,8 @@ class LatestProducts extends Component {
 
 function mapStateToProps(state) {
   return {
-    latestProducts: state.product.latestProducts
-      ? state.product.latestProducts
+    latestProducts: productsSelector.getLatestProducts(state)
+      ? productsSelector.getLatestProducts(state)
       : [],
     isLoading: productsSelector.isLoading(state)
   };
