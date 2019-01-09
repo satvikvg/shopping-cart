@@ -22,33 +22,27 @@ const style = theme => ({
 class ProductCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      product: {
-        name: "Product name",
-        shortDesc: "This is product short description",
-        description: "Product description",
-        price: "Rs. 25"
-      }
-    };
+    this.state = {};
   }
   render() {
-    const { classes } = this.props;
-    const { product } = this.state;
+    const { classes, product } = this.props;
     return (
       <Card className={classes.card}>
         <Route
           render={({ history }) => (
             <CardActionArea
               onClick={() => {
-                history.push("/product/PROD0001");
+                history.push("/product/" + product.id);
               }}
             >
               <CardMedia>
-                <img src={"./public/icon.png"} alt="Product image" />
+                <img src={product.image} alt={product.name} />
               </CardMedia>
               <CardContent>
                 <Typography variant="h4">{product.name}</Typography>
-                <Typography variant="subtitle1">{product.shortDesc}</Typography>
+                <Typography variant="subtitle1">
+                  {product.description}
+                </Typography>
                 <Typography variant="caption">{product.price}</Typography>
               </CardContent>
             </CardActionArea>

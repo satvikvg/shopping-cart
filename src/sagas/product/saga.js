@@ -14,10 +14,10 @@ function* productWorkerSaga() {
 
   const response = yield call(fetchLatestProducts);
   if (response !== null) {
-    const latestProducts = response.message;
+   
     yield put({
       type: FETCH_LATEST_PRODUCTS_SUCCESS,
-      payload: { latestProducts }
+      payload: response
     });
   }
 }
@@ -27,7 +27,6 @@ function* fetchLatestProducts() {
     console.log("Fetching latest products.");
     const response = yield fetch("http://localhost:3004/products?_limit=20");
     const responseJson = yield response.json();
-    console.log(responseJson);
     return responseJson;
   } catch (error) {
     console.error(error);
