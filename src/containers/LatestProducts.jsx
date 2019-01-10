@@ -6,6 +6,7 @@ import { Typography, withStyles, CircularProgress } from "@material-ui/core";
 import * as productsSelector from "../reducers/product/reducer";
 import { FETCH_LATEST_PRODUCTS_REQUEST } from "../reducers/product/actionTypes";
 import { connect } from "react-redux";
+import { ADD_CART_ITEM } from "../reducers/cart/actionTypes";
 
 const styles = theme => ({
   progress: {
@@ -45,10 +46,21 @@ class LatestProducts extends Component {
         <Typography variant="h5">Latest Products</Typography>
         {latestProducts.map(product => {
           console.log(product);
-          return <ProductCard key={product.id} product={product} />;
+          return (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onClick={() => this.handleProductClick(product.id)}
+              onAddToCart={() => this.props.handleAddToCart(product)}
+            />
+          );
         })}
       </React.Fragment>
     );
+  }
+
+  handleProductClick(id) {
+    this.props.history.push(`/product/${id}`);
   }
 }
 
@@ -64,7 +76,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onRequestLatestProducts: () =>
-      dispatch({ type: FETCH_LATEST_PRODUCTS_REQUEST })
+      dispatch({ type: FETCH_LATEST_PRODUCTS_REQUEST }),
+
+    handleAddToCart: product =>
+      dispatch({ type: ADD_CART_ITEM, payload: { product } })
   };
 }
 

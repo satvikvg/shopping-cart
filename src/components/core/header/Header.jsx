@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import autoBind from "auto-bind";
+import { connect } from "react-redux";
+import { Route } from "react-router-dom";
+import * as cartSelector from "../../../reducers/cart/reducer";
 import classNames from "classnames";
 import {
   AppBar,
@@ -7,7 +11,8 @@ import {
   IconButton,
   withStyles,
   Divider,
-  InputBase
+  InputBase,
+  Badge
 } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
@@ -67,10 +72,11 @@ const style = theme => ({
 class Header extends Component {
   constructor(props) {
     super(props);
+    autoBind(this);
     this.state = {};
   }
   render() {
-    const { classes } = this.props;
+    const { classes, cart } = this.props;
     return (
       <AppBar
         position="sticky"
@@ -91,9 +97,19 @@ class Header extends Component {
             />
           </div>
           <div className={classes.grow} />
-          <IconButton>
-            <CartIcon />
-          </IconButton>
+          <Route
+            render={({ history }) => (
+              <IconButton
+                onClick={() => {
+                  history.push(`/cart`);
+                }}
+              >
+                <Badge badgeContent={cart.count} color="secondary">
+                  <CartIcon />
+                </Badge>
+              </IconButton>
+            )}
+          />
         </Toolbar>
         <Divider />
       </AppBar>
@@ -101,4 +117,19 @@ class Header extends Component {
   }
 }
 
-export default withStyles(style)(Header);
+function mapStateToProps(state) {
+  return {
+    cart: {
+      count: cartSelector.getCartItemsCount(state)
+    }
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(style)(Header));

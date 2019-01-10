@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import {
   Card,
   CardMedia,
@@ -26,15 +26,9 @@ const style = theme => ({
 class ProductCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      redirect: null
-    };
+    this.state = {};
   }
   render() {
-    const { redirect } = this.state;
-
-    if (redirect) return this.renderRedirect();
-
     return this.renderProductCard();
   }
 
@@ -42,16 +36,7 @@ class ProductCard extends Component {
     const { classes, product } = this.props;
     return (
       <Card className={classes.card}>
-        <CardActionArea
-          onClick={() => {
-            this.setState({
-              redirect: {
-                pathname: `/product/${product.id}`,
-                product
-              }
-            });
-          }}
-        >
+        <CardActionArea onClick={this.props.onClick}>
           <CardMedia className={classes.productImage}>
             <img src={product.image} alt={product.name} />
           </CardMedia>
@@ -79,17 +64,18 @@ class ProductCard extends Component {
         </CardActionArea>
 
         <CardActions>
-          <Button size="small" color="primary" variant="outlined" fullWidth>
+          <Button
+            size="small"
+            color="primary"
+            variant="outlined"
+            fullWidth
+            onClick={this.props.onAddToCart}
+          >
             Add to cart
           </Button>
         </CardActions>
       </Card>
     );
-  }
-
-  renderRedirect() {
-    const { redirect } = this.state;
-    return <Redirect to={{ ...redirect }} />;
   }
 }
 

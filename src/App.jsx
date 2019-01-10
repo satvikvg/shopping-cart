@@ -17,6 +17,7 @@ import Checkout from "./components/pages/Checkout";
 import SignIn from "./components/pages/SignIn";
 import ProductDetails from "./components/pages/ProductDetails";
 import LatestProducts from "./containers/LatestProducts";
+import CartPage from "./components/pages/CartPage";
 // All the following keys are optional.
 // We try our best to provide a great default value.
 const theme = createMuiTheme({
@@ -52,6 +53,7 @@ class App extends Component {
               <Home>
                 <Switch>
                   <Route exact path={"/"} component={LatestProducts} />
+                  <Route path={"/cart"} component={CartPage} />
                   <Route path={"/product/:id"} component={ProductDetails} />
                 </Switch>
               </Home>

@@ -4,7 +4,8 @@ import {
   withStyles,
   ListItem,
   Button,
-  Divider
+  Divider,
+  CircularProgress
 } from "@material-ui/core";
 import Container from "../core/container/Container";
 import * as productSelector from "../../reducers/product/reducer";
@@ -12,6 +13,9 @@ import { FETCH_PRODUCT_REQUEST } from "../../reducers/product/actionTypes";
 import { connect } from "react-redux";
 
 const styles = theme => ({
+  progress: {
+    margin: theme.spacing.unit * 2
+  },
   productImage: {
     maxWidth: 400,
     maxHeight: 400,
@@ -33,18 +37,16 @@ class ProductDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
+      isLoading: true,
       product: this.props.location.product
     };
   }
 
   componentDidMount() {
-    const { product } = this.props.location;
     const productId = this.props.match.params.id;
 
-    if (!product && productId) {
-      this.setState({ isLoading: true });
-      this.getProductById(productId);
+    if (productId) {
+      this.props.onRequestProduct(productId);
     } else {
       this.setState({
         error: new Error("Product not found with id: NULL")
@@ -53,10 +55,24 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { product } = this.props.location;
+    const { isLoading, product } = this.props;
 
-    console.debug(this.props);
+    if (isLoading) {
+      return this.renderLoading();
+    } else if (!isLoading && product) {
+      return this.renderProductDetails();
+    } else {
+      return this.renderError();
+    }
+  }
+
+  renderLoading() {
+    const { classes } = this.props;
+    return <CircularProgress className={classes.progress} />;
+  }
+
+  renderProductDetails() {
+    const { classes, product } = this.props;
 
     return (
       <Container>
@@ -109,6 +125,14 @@ class ProductDetails extends Component {
           </div>
         </ListItem>
       </Container>
+    );
+  }
+
+  renderError() {
+    return (
+      <Typography variant="h5" color="error">
+        Error loading product details page.
+      </Typography>
     );
   }
 }
