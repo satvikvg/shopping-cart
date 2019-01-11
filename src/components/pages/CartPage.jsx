@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import autoBind from "auto-bind";
+import { Link } from "react-router-dom";
 import * as cartSelector from "../../reducers/cart/reducer";
 import {
   Typography,
@@ -10,7 +12,9 @@ import {
   Divider,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  Grid,
+  Button
 } from "@material-ui/core";
 import Container from "../core/container/Container";
 import { connect } from "react-redux";
@@ -26,6 +30,7 @@ const styles = theme => ({
 class CartPage extends Component {
   constructor(props) {
     super(props);
+    autoBind(this);
     this.state = {};
   }
   render() {
@@ -37,18 +42,28 @@ class CartPage extends Component {
 
     return (
       <Container>
-        <Typography variant="h5" gutterBottom>
-          Your cart
-        </Typography>
-        <Divider />
+        <Grid container>
+          <Grid item xs>
+            <Typography variant="h5">Your cart</Typography>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to="/checkout"
+            >
+              Checkout
+            </Button>
+          </Grid>
+        </Grid>
         <List>{this.getCartItems()}</List>
-        <Divider />
         <ListItem>
           <Typography variant="h6" className={classes.grow}>
             Cart summary
           </Typography>
           <div>
-            <Typography variant="title">
+            <Typography variant="subtitle1">
               <b>{`$${this.props.cartTotal}`}</b>
             </Typography>
             <Typography variant="caption">Inclusive of all taxes</Typography>
@@ -64,7 +79,7 @@ class CartPage extends Component {
     return (
       <React.Fragment>
         {items.map((item, index) => (
-          <ListItem key={`cart-item-${index}`}>
+          <ListItem key={`cart-item-${index}`} divider>
             <ListItemAvatar>
               <Avatar src={item.product.image} alt={item.product.name}>
                 {item.product.name.substr(0, 2)}

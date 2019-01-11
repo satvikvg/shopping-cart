@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as userSelector from "./reducers/user/reducer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 import red from "@material-ui/core/colors/red";
-import { Typography, MuiThemeProvider } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core";
 import {
   BrowserRouter as Router,
   Switch,
@@ -44,21 +46,24 @@ class App extends Component {
     this.state = {};
   }
   render() {
+    const { isAuth } = this.props;
     return (
       <AuthContext.Provider>
         <CssBaseline />
         <MuiThemeProvider theme={theme}>
           <Router>
             <Switch>
-              <Home>
-                <Switch>
-                  <Route exact path={"/"} component={LatestProducts} />
-                  <Route path={"/cart"} component={CartPage} />
-                  <Route path={"/product/:id"} component={ProductDetails} />
-                </Switch>
-              </Home>
               <Route path={"/signin"} component={SignIn} />
-              <PrivateRoute path={"/checkout"} component={Checkout} />
+              <Home>
+                <Route exact path={"/"} component={LatestProducts} />
+                <Route path={"/cart"} component={CartPage} />
+                <Route path={"/product/:id"} component={ProductDetails} />
+                <PrivateRoute
+                  path={"/checkout"}
+                  isAuth={isAuth}
+                  component={Checkout}
+                />
+              </Home>
             </Switch>
           </Router>
         </MuiThemeProvider>
@@ -68,6 +73,7 @@ class App extends Component {
 }
 
 function PrivateRoute({ component: Component, ...rest }) {
+  console.debug("Entered Private route");
   return (
     <Route
       {...rest}
@@ -87,4 +93,11 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    currentUser: userSelector.getCurrentUser(state),
+    isAuth: userSelector.getCurrentUser(state) ? true : false
+  };
+}
+
+export default connect(mapStateToProps)(App);
