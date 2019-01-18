@@ -6,6 +6,8 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 import red from "@material-ui/core/colors/red";
+import teal from "@material-ui/core/colors/teal";
+import amber from "@material-ui/core/colors/amber";
 import { MuiThemeProvider } from "@material-ui/core";
 import {
   BrowserRouter as Router,
@@ -20,12 +22,13 @@ import SignIn from "./components/pages/SignIn";
 import ProductDetails from "./components/pages/ProductDetails";
 import LatestProducts from "./containers/LatestProducts";
 import CartPage from "./components/pages/CartPage";
+import SignUpPage from "./components/pages/SignUpPage";
 // All the following keys are optional.
 // We try our best to provide a great default value.
 const theme = createMuiTheme({
   palette: {
-    primary: blue,
-    secondary: pink,
+    primary: teal,
+    secondary: amber,
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.
@@ -46,7 +49,7 @@ class App extends Component {
     this.state = {};
   }
   render() {
-    const { isAuth } = this.props;
+    const { currentUser } = this.props;
     return (
       <AuthContext.Provider>
         <CssBaseline />
@@ -54,13 +57,14 @@ class App extends Component {
           <Router>
             <Switch>
               <Route path={"/signin"} component={SignIn} />
+              <Route path={"/signup"} component={SignUpPage} />
               <Home>
                 <Route exact path={"/"} component={LatestProducts} />
                 <Route path={"/cart"} component={CartPage} />
                 <Route path={"/product/:id"} component={ProductDetails} />
                 <PrivateRoute
                   path={"/checkout"}
-                  isAuth={isAuth}
+                  currentUser={currentUser}
                   component={Checkout}
                 />
               </Home>
@@ -72,13 +76,14 @@ class App extends Component {
   }
 }
 
-function PrivateRoute({ component: Component, ...rest }) {
+function PrivateRoute({ component: Component, currentUser, ...rest }) {
   console.debug("Entered Private route");
+  console.debug("Current user is: " + currentUser);
   return (
     <Route
       {...rest}
       render={props =>
-        props.isAuth ? (
+        currentUser ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -95,8 +100,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 
 function mapStateToProps(state) {
   return {
-    currentUser: userSelector.getCurrentUser(state),
-    isAuth: userSelector.getCurrentUser(state) ? true : false
+    currentUser: userSelector.getCurrentUser(state)
   };
 }
 

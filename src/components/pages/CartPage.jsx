@@ -38,7 +38,17 @@ class CartPage extends Component {
   }
 
   renderCartDetails() {
-    const { classes, cart } = this.props;
+    const { classes, items } = this.props;
+
+    if (items.length === 0) {
+      return (
+        <Container>
+          <Typography variant="h4" align="center">
+            Your cart is empty
+          </Typography>
+        </Container>
+      );
+    }
 
     return (
       <Container>

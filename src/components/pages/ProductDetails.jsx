@@ -1,21 +1,22 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import {
   Typography,
   withStyles,
   ListItem,
   Button,
   Divider,
-  CircularProgress
+  CircularProgress,
+  LinearProgress
 } from "@material-ui/core";
 import Container from "../core/container/Container";
 import * as productSelector from "../../reducers/product/reducer";
 import { FETCH_PRODUCT_REQUEST } from "../../reducers/product/actionTypes";
 import { connect } from "react-redux";
+import * as cartActions from "../../reducers/cart/actions";
+import * as cartSelector from "../../reducers/cart/reducer";
 
 const styles = theme => ({
-  progress: {
-    margin: theme.spacing.unit * 2
-  },
   productImage: {
     maxWidth: 400,
     maxHeight: 400,
@@ -55,7 +56,11 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const { isLoading, product } = this.props;
+    const { isLoading, product, buyNow } = this.props;
+
+    if (buyNow) {
+      return <Redirect to={"/checkout"} />;
+    }
 
     if (isLoading) {
       return this.renderLoading();
@@ -67,8 +72,7 @@ class ProductDetails extends Component {
   }
 
   renderLoading() {
-    const { classes } = this.props;
-    return <CircularProgress className={classes.progress} />;
+    return <LinearProgress color="secondary" />;
   }
 
   renderProductDetails() {
@@ -111,6 +115,7 @@ class ProductDetails extends Component {
                 variant="contained"
                 color="primary"
                 className={classes.button}
+                onClick={() => this.props.onAddToCart({ product })}
               >
                 Add to cart
               </Button>
@@ -118,6 +123,7 @@ class ProductDetails extends Component {
                 variant="contained"
                 color="secondary"
                 className={classes.button}
+                onClick={() => this.props.onBuyNow(product)}
               >
                 Buy now
               </Button>
@@ -140,7 +146,8 @@ class ProductDetails extends Component {
 function mapStateToProps(state) {
   return {
     isLoading: productSelector.isLoading(state),
-    product: productSelector.getProduct(state)
+    product: productSelector.getProduct(state),
+    buyNow: cartSelector.isBuyNow(state)
   };
 }
 
@@ -148,7 +155,10 @@ function mapDispatchToProps(dispatch) {
   return {
     onRequestProduct: id => {
       dispatch({ type: FETCH_PRODUCT_REQUEST, payload: { id } });
-    }
+    },
+    onAddToCart: item => dispatch(cartActions.addToCart(item)),
+
+    onBuyNow: product => dispatch(cartActions.buyNow({ product }))
   };
 }
 

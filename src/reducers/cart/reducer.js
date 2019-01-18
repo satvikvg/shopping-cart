@@ -3,7 +3,8 @@ import * as types from "./actionTypes";
 
 const initialState = Immutable({
   isLoading: false,
-  items: []
+  items: [],
+  buyNow: false
 });
 
 export default function reduce(state = initialState, action = {}) {
@@ -23,6 +24,14 @@ export default function reduce(state = initialState, action = {}) {
     case types.REMOVE_ALL_CART_ITEMS:
       return state.merge({
         items: []
+      });
+
+    case types.CART_BUY_NOW:
+      const buyNowItems = state.items.asMutable();
+      buyNowItems.push(action.payload.item);
+      return state.merge({
+        items: buyNowItems,
+        buyNow: true
       });
 
     default:
@@ -49,4 +58,8 @@ export function getCartTotal(state) {
   total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
 
   return total;
+}
+
+export function isBuyNow(state) {
+  return state.cart.buyNow;
 }

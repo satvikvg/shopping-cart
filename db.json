@@ -1103,8 +1103,10 @@
   ],
   "users": [
     {
+      "id": 1,
       "firstName": "Satvik",
       "lastName": "Gadag",
+      "username": "satvik@mail.com",
       "email": "satvik@mail.com",
       "phone": "+919876543210",
       "password": "something"

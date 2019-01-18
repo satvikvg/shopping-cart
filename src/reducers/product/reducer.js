@@ -11,6 +11,7 @@ export default function reduce(state = initialState, action = {}) {
   switch (action.type) {
     // Handle fetch latest products actions.
     case types.FETCH_LATEST_PRODUCTS_REQUEST:
+    case types.SEARCH_PRODUCTS_REQUEST:
       return state.merge({ loading: true });
 
     case types.FETCH_LATEST_PRODUCTS_SUCCESS:

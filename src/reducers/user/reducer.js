@@ -12,13 +12,14 @@ export default function reduce(state = initialState, action = {}) {
     // Handle sign in user actions.
     case types.SIGN_IN_USER_REQUEST:
       return state.merge({
-        isLoading: true
+        isLoading: true,
+        error: null
       });
 
     case types.SIGN_IN_USER_SUCCESS:
       return state.merge({
         isLoading: false,
-        currentUser: action.payload.user
+        currentUser: action.payload.currentUser
       });
 
     case types.SIGN_IN_USER_FALIURE:
@@ -37,7 +38,7 @@ export default function reduce(state = initialState, action = {}) {
     case types.SIGN_UP_USER_SUCCESS:
       return state.merge({
         isLoading: false,
-        currentUser: action.payload.user
+        currentUser: action.payload.currentUser
       });
 
     case types.SIGN_UP_USER_FALIURE:
@@ -45,6 +46,12 @@ export default function reduce(state = initialState, action = {}) {
         isLoading: false,
         currentUser: null,
         error: action.payload.error
+      });
+
+    // Handle sign out user actions
+    case types.SIGN_OUT_USER_REQUEST:
+      return state.merge({
+        currentUser: null
       });
 
     default:

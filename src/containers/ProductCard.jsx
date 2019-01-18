@@ -18,8 +18,8 @@ const style = theme => ({
     maxWidth: 320,
     margin: theme.spacing.unit
   },
-  productImage: {
-    textAlign: "center"
+  media: {
+    height: 200
   }
 });
 
@@ -37,9 +37,11 @@ class ProductCard extends Component {
     return (
       <Card className={classes.card}>
         <CardActionArea onClick={this.props.onClick}>
-          <CardMedia className={classes.productImage}>
-            <img src={product.image} alt={product.name} />
-          </CardMedia>
+          <CardMedia
+            className={classes.media}
+            image={product.image}
+            title={product.name}
+          />
           <CardContent>
             <Grid container alignItems="center">
               <Grid item xs>

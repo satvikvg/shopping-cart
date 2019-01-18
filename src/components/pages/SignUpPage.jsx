@@ -52,7 +52,7 @@ const styles = theme => ({
   }
 });
 
-class SignIn extends Component {
+class SignUpPage extends Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -60,15 +60,18 @@ class SignIn extends Component {
       user: {}
     };
 
-    this.emailInput = React.createRef();
+    this.firstNameInput = React.createRef();
+    this.lastNameInput = React.createRef();
+    this.firstNameInput = React.createRef();
+    this.phoneInput = React.createRef();
     this.passwordInput = React.createRef();
   }
 
   render() {
     const { classes, isLoading, currentUser, error } = this.props;
     const { state } = this.props.history.location;
-    if (currentUser && state && state.from) {
-      return <Redirect to={state.from.pathname ? state.from.pathname : "/"} />;
+    if (currentUser) {
+      return <Redirect to={"/"} />;
     }
 
     return (
@@ -81,9 +84,48 @@ class SignIn extends Component {
               <LockIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign up
             </Typography>
             <form className={classes.form} onSubmit={this.handleFormSubmit}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="firstName">First Name</InputLabel>
+                <Input
+                  id="firstName"
+                  name="firstName"
+                  autoComplete="firstName"
+                  disabled={isLoading}
+                  inputRef={input => {
+                    this.firstNameInput = input;
+                  }}
+                  autoFocus
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="lastName">Last Name</InputLabel>
+                <Input
+                  id="lastName"
+                  name="lastName"
+                  autoComplete="lastName"
+                  disabled={isLoading}
+                  inputRef={input => {
+                    this.lastNameInput = input;
+                  }}
+                  autoFocus
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="phone">Phone</InputLabel>
+                <Input
+                  id="phone"
+                  name="phone"
+                  autoComplete="phone"
+                  disabled={isLoading}
+                  inputRef={input => {
+                    this.phoneInput = input;
+                  }}
+                  autoFocus
+                />
+              </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
                 <Input
@@ -110,13 +152,6 @@ class SignIn extends Component {
                   }}
                 />
               </FormControl>
-
-              {error && (
-                <Typography variant="body2" gutterBottom color="error">
-                  {error.message}
-                </Typography>
-              )}
-
               <Button
                 type="submit"
                 fullWidth
@@ -125,13 +160,13 @@ class SignIn extends Component {
                 className={classes.submit}
                 disabled={isLoading}
               >
-                Sign in
+                Register
               </Button>
             </form>
             <Typography variant="body2">
-              Don't have an account?{" "}
-              <Link to={"/signup"} replace>
-                Sign up
+              Already have an account?{" "}
+              <Link to={"/signin"} replace>
+                Sign in
               </Link>
             </Typography>
           </Paper>
@@ -143,15 +178,19 @@ class SignIn extends Component {
   handleFormSubmit(event) {
     event.preventDefault();
     const user = {
+      firstName: this.firstNameInput.value,
+      lastName: this.lastNameInput.value,
+      phoneName: this.phoneInput.value,
+      email: this.emailInput.value,
       username: this.emailInput.value,
       password: this.passwordInput.value
     };
 
-    this.props.onSignInRequest(user);
+    this.props.onSignUpRequest(user);
   }
 }
 
-SignIn.propTypes = {
+SignUpPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -165,11 +204,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSignInRequest: user => dispatch(userActions.signIn(user))
+    onSignUpRequest: user => dispatch(userActions.signUp(user))
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(SignIn));
+)(withStyles(styles)(SignUpPage));

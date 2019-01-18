@@ -2,17 +2,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Container from "../components/core/container/Container";
 import ProductCard from "./ProductCard";
-import { Typography, withStyles, CircularProgress } from "@material-ui/core";
+import {
+  Typography,
+  withStyles,
+  CircularProgress,
+  LinearProgress
+} from "@material-ui/core";
 import * as productsSelector from "../reducers/product/reducer";
 import { FETCH_LATEST_PRODUCTS_REQUEST } from "../reducers/product/actionTypes";
 import { connect } from "react-redux";
 import { ADD_CART_ITEM } from "../reducers/cart/actionTypes";
+import * as cartActions from "../reducers/cart/actions";
 
-const styles = theme => ({
-  progress: {
-    margin: theme.spacing.unit * 2
-  }
-});
+const styles = theme => ({});
 
 class LatestProducts extends Component {
   constructor(props) {
@@ -35,15 +37,13 @@ class LatestProducts extends Component {
   }
 
   renderLoading() {
-    const { classes } = this.props;
-    return <CircularProgress className={classes.progress} />;
+    return <LinearProgress variant="indeterminate" color="secondary" />;
   }
 
   renderLatestProducts() {
     const { latestProducts } = this.props;
     return (
       <React.Fragment>
-        <Typography variant="h5">Latest Products</Typography>
         {latestProducts.map(product => {
           console.log(product);
           return (

@@ -8,9 +8,19 @@ class Footer extends Component {
   }
   render() {
     return (
-      <Typography variant="subtitle2" align="center">
-        This is footer component, [WIP - Will be implemented soon]
-      </Typography>
+      <footer color="">
+        <Typography variant="h6" align="center" gutterBottom>
+          Shopping cart demo
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="textSecondary"
+          component="p"
+        >
+          Copyright 2019 - Shopping cart company
+        </Typography>
+      </footer>
     );
   }
 }
